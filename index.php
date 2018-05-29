@@ -15,8 +15,8 @@
 
   // $git_content = 'folder collected from git repo';
   $git_test_content = '../test_repo/themes/test_theme/';
-  $test = scandir($git_test_content);
-  var_dump($test);
+  // $test = scandir($git_test_content);
+  // var_dump($test);
   
   $theme_name = 'test_theme'; // Name of theme being updated
   $theme_zipped = 'test_theme.zip';
@@ -24,10 +24,8 @@
 
   if ($res === TRUE) {
     // addGlob()
-
     $options = array('add_path' => 'themes/' . $theme_name . '/', 'remove_all_path' => TRUE);
     $zip->addGlob($git_test_content . '*.{jpg,php,txt}', GLOB_BRACE, $options);  // $git_content variable will be used here.
-    // $zip->addFromString('test_folder/test.txt', 'file content goes here');  // adding a file with some text
     $zip->close();
     echo 'Zip file created. Good job!';
   } else {
