@@ -1,18 +1,17 @@
 <?php
 
-  // use hooks; // Needs proper namespace from jakobs library
- 
-  $zip = new ZipArchive();
+  require __DIR__ . '/hooks/vendor/autoload.php';
 
   // 1. Script is run on git push 
-
+  
   // $hookers = Hook\Hook::Github();
   // $hookers->listen('push');
 
   // echo $hookers->output;
-
+  
   // 2. get theme and zip contents
-
+  
+  $zip = new ZipArchive();
   // $git_content = 'folder collected from git repo';
   $git_test_content = '../test_repo/themes/test_theme/';
   
@@ -22,13 +21,23 @@
   $res = $zip->open($theme_zipped, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
   if ($res === TRUE) {
-    // addGlob()
-    $options = array('add_path' => 'themes/' . $theme_name . '/', 'remove_all_path' => TRUE);
-    $zip->addGlob($git_test_content . '*.{jpg,php,txt}', GLOB_BRACE, $options);  // $git_content variable will be used here.
+    
+    $allFiles = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($git_test_content));
+
+    // Run through all file/folders
+    foreach ($allFiles as $key => $value) {
+      // Check if file is a folder
+      if ($value->isDir()) {
+        flush();
+        continue;
+      }
+      $filePath = $value->getRealPath();
+      $relativePath = substr($filePath, strlen($git_test_content) + 5);
+      $zip->addFile($filePath, $relativePath);
+    }
+    
     $zip->close();
-    echo 'Zip file created. Good job!';
-  } else {
-    echo 'That didn\'t work.';
+    echo 'Zip-file created with folders and files.';
   }
 
   // 3. send zip to theme folder & unzip
