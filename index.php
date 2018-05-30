@@ -15,11 +15,10 @@
 
   // $git_content = 'folder collected from git repo';
   $git_test_content = '../test_repo/themes/test_theme/';
-  // $test = scandir($git_test_content);
-  // var_dump($test);
   
   $theme_name = 'test_theme'; // Name of theme being updated
   $theme_zipped = 'test_theme.zip';
+  $theme_dest = '../test_repo/wp_project/wp-content/';
   $res = $zip->open($theme_zipped, ZipArchive::CREATE | ZipArchive::OVERWRITE);
 
   if ($res === TRUE) {
@@ -38,7 +37,7 @@
   
   if ($zipped_res) {
     echo 'ok';
-    $zip->extractTo('../test_repo/wp_project/wp-content/');  // This will be the destination for the theme folder
+    $zip->extractTo($theme_dest);  // This will be the destination for the theme folder
     $zip->close();
   } else {
     echo 'Error, something went wrong. Check this code: ' . $res;
