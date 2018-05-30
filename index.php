@@ -4,10 +4,10 @@
 
   // 1. Script is run on git push 
   
-  // $hookers = Hook\Hook::Github();
-  // $hookers->listen('push');
+  $hookers = Hook\Hook::Github();
+  $hookers->listen('push');
 
-  // echo $hookers->output;
+  echo $hookers->output;
   
   // 2. get theme and zip contents
   
